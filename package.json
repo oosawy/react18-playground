@@ -1,0 +1,12 @@
+{
+  "name": "react-suspense-ssr-head",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "react": "^18.0.0-alpha-1314299c7-20210901",
+    "react-dom": "^18.0.0-alpha-1314299c7-20210901",
+    "react-helmet": "^6.1.0"
+  }
+}
