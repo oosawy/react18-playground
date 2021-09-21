@@ -1,4 +1,5 @@
 import React, {Fragment, Suspense, useState} from 'react'
+import { Switch, Route, Link } from 'react-router-dom'
 
 const h = React.createElement
 
@@ -18,15 +19,27 @@ const Content = ({ resource }) => (
 	)
 )
 
-export const App = () => {
+const Index = () => {
 	const [resource] = useState(() => createResource())
 
 	return (
-	    h(Suspense, { fallback: h('p', {}, 'loading...') },
-			h(Content, { resource })
+		h(Fragment, {},
+			h(Link, { to: '/about' }, 'About'),
+			h(Suspense, { fallback: h('p', {}, 'loading...') },
+				h(Content, { resource })
+			),
 		)
 	)
 }
+
+const About = () => h('p', {}, 'This is a PoC of simple and straightforward React framework!')
+
+export const App = () => (
+	h(Switch, {},
+		h(Route, { path: '/', exact: true, component: Index }),
+		h(Route, { path: '/about', component: About }),
+	)
+)
 
 const createResource = () => {
 	console.log('LOADING')
