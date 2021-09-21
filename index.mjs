@@ -2,7 +2,7 @@ import http from 'http'
 import fs from 'fs'
 import React from 'react'
 import ReactDOM from 'react-dom/server.js'
-import { Root, App } from './client.mjs'
+import { App } from './App.mjs'
 
 const h = React.createElement
 
@@ -13,13 +13,12 @@ const Document = ({ children }) => (
 			h('meta', { name: 'viewport', content: 'width=device-width' })
 		),
 		h('body', {},
-			h('div', { id: 'root' },
-				h(Root, {}, children),
-			),
+			h('div', { id: 'root' }, children),
 			h('script', { type: 'importmap', dangerouslySetInnerHTML: {
 				__html: JSON.stringify({ imports: {
 					'react': 'https://esm.sh/react@18.0.0-alpha-1314299c7-20210901',
 					'react-dom': 'https://esm.sh/react-dom@18.0.0-alpha-1314299c7-20210901',
+					'./App.mjs': '/App'
 				} })
 			} }),
 			h('script', { type: 'module', src: '/client' })
@@ -27,7 +26,7 @@ const Document = ({ children }) => (
 	)
 )
 
-const renderApp = () => h(Document, {}, h(Root, {}, h(App)))
+const renderApp = () => h(Document, {}, h(App))
 
 const STATIC = ReactDOM.renderToString(renderApp())
 
@@ -37,9 +36,9 @@ const server = http.createServer((req, res) => {
 
 	const url = new URL(req.url, `http://${req.headers.host}`)
 
-	if (url.pathname === '/client') {
+	if (url.pathname === '/client' || url.pathname === '/App') {
 		res.setHeader('Content-Type', 'text/javascript')
-		fs.createReadStream('./client.mjs').pipe(res)
+		fs.createReadStream(`.${url.pathname}.mjs`).pipe(res)
 		return
 	}
 	if (url.pathname !== '/') {
