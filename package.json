@@ -2,7 +2,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "react": "^18.0.0-alpha-1314299c7-20210901",
-    "react-dom": "^18.0.0-alpha-1314299c7-20210901"
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
   }
 }

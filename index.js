@@ -1,7 +1,7 @@
 import http from 'http'
 import fs from 'fs'
 import React from 'react'
-import ReactDOM from 'react-dom/server.js'
+import ReactDOM from 'react-dom/server'
 import { App } from './App.js'
 
 const h = React.createElement
@@ -16,8 +16,8 @@ const Document = ({ children }) => (
 			h('div', { id: 'root' }, children),
 			h('script', { type: 'importmap', dangerouslySetInnerHTML: {
 				__html: JSON.stringify({ imports: {
-					'react': 'https://esm.sh/react@18.0.0-alpha-1314299c7-20210901',
-					'react-dom': 'https://esm.sh/react-dom@18.0.0-alpha-1314299c7-20210901'
+					'react': 'https://esm.sh/react@18.1.0?dev',
+					'react-dom/client': 'https://esm.sh/react-dom@18.1.0/client?dev'
 				} })
 			} }),
 			h('script', { type: 'module', src: '/client.js' })

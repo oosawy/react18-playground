@@ -14,32 +14,24 @@ loose-envify@^1.1.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-object-assign@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
-  integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
-
-react-dom@^18.0.0-alpha-1314299c7-20210901:
-  version "18.0.0-alpha-1314299c7-20210901"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.0.0-alpha-1314299c7-20210901.tgz#752f8ba787d1ff07af3f1f0060f5b7b0058785a5"
-  integrity sha512-N8cUoDV3Byn/7Qbv/wH93ZVsAi1oCMmnDY3+jTV1Bn9td51WCO8KTyIEZh3tav3WjTJRMNd6tHg/G7jCUmmVBg==
+react-dom@18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
+  integrity sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    scheduler "0.21.0-alpha-1314299c7-20210901"
+    scheduler "^0.22.0"
 
-react@^18.0.0-alpha-1314299c7-20210901:
-  version "18.0.0-alpha-1314299c7-20210901"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.0.0-alpha-1314299c7-20210901.tgz#3d9e66eb8523711c32560efcaacddb38369db8f4"
-  integrity sha512-5a0UD/5rIQ7MfDWXL4oPOv+/kh0iBGdFl8gBlCa9oO9lLk0fpET3YUWhYFPHlnotPVPVDajY4UjvnbFQh2bbnQ==
+react@18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"
+  integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
-scheduler@0.21.0-alpha-1314299c7-20210901:
-  version "0.21.0-alpha-1314299c7-20210901"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.21.0-alpha-1314299c7-20210901.tgz#357f9799184f44248774d9d1918bc4a1172e4043"
-  integrity sha512-nNBRT6Aopq8RYvHdAdDI00TLr3QYeFNzEILCjbI3+1w6RyGH1C2l1jXWTSZTMQIPI/fREEOFyR3xRUjeuW8fmg==
+scheduler@^0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.22.0.tgz#83a5d63594edf074add9a7198b1bae76c3db01b8"
+  integrity sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"

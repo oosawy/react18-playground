@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { App } from './App.js'
 
 const h = React.createElement
@@ -7,6 +7,6 @@ const h = React.createElement
 const Root = () => h(App)
 
 requestIdleCallback(() => {
-	ReactDOM.hydrate(h(Root), document.getElementById('root'))
+	ReactDOM.createRoot(document.getElementById('root')).render(h(Root))
 })
 
