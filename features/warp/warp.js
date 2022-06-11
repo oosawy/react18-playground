@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react'
+import React, { useRef, useContext, useState, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 
 const h = React.createElement
@@ -6,49 +6,33 @@ const h = React.createElement
 const WarpContext = React.createContext()
 
 export const WarpProvider = ({ children }) => {
-  const managerRef = useRef()
-  if (!managerRef.current) managerRef.current = createWarpManager()
-  const manager = managerRef.current
+  const [portals, setPortals] = useState({})
 
-  return h(WarpContext.Provider, { value: manager }, children, h(WarpHost, { manager }))
+  const manager = {
+    add(key, children) {
+      const node = portals[key]?.node ?? document.createElement('div')
+      setPortals(prev => ({ ...prev, [key]: { node, children } }))
+      return node
+    }
+  }
+
+  return h(WarpContext.Provider, { value: manager }, children, h(WarpHost, { portals }))
 }
 
-const WarpHost = ({ manager: { portals } }) => {
-  return [...portals.entries()].map(([key, portal]) => portal)
+const WarpHost = ({ portals }) => {
+  return Object.values(portals).map(({ node, children }) => createPortal(children, node))
 }
 
 export const Warp = ({ children }) => {
   const manager = useContext(WarpContext)
 
-  const key = React.Children.only(children).key
-  const node = manager.with(key, children)
+  const ref = useRef()
 
-  return h('div', { ref: (el) => el && el.append(node) })
-}
+  useLayoutEffect(() => {
+    const key = React.Children.only(children).key
+    const node = manager.add(key, children)
+    ref.current?.append(node)
+  }, [children])
 
-const createWarpManager = () => {
-  const nodes = new Map()
-  const portals = new Map()
-
-  return {
-    portals,
-    with(key, children) {
-      if (nodes.has(key)) {
-        const node = nodes.get(key)
-
-        // const portal = createPortal(children, node)
-        // portals.set(key, portal)
-
-        return node
-      }
-
-      const node = document.createElement('div')
-      nodes.set(key, node)
-
-      const portal = createPortal(children, node)
-      portals.set(key, portal)
-
-      return node
-    }
-  }
+  return h('div', { ref })
 }
