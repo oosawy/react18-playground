@@ -1,6 +1,9 @@
 {
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "node index.js"
+  },
   "dependencies": {
     "react": "18.1.0",
     "react-dom": "18.1.0"
