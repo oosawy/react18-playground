@@ -1,4 +1,5 @@
 import React from 'react'
+import { Warp, WarpProvider } from './warp.js'
 
 const h = React.createElement
 
@@ -14,13 +15,19 @@ const Detail = () => h('div', {},
   h(Video)
 )
 
+Index.getLayout = (route) => h(WarpProvider, {}, route)
+Detail.getLayout = (route) => h(WarpProvider, {}, route)
+
 export const routes = {
   '/videos': Index,
   '/videos/1': Detail,
 }
 
-const Video = () => h('video', {
-  controls: true,
-  width: '620',
-  src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
-})
+const Video = () => h(Warp, {},
+  h('video', {
+    key: 'video-1',
+    controls: true,
+    width: '620',
+    src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
+  })
+)

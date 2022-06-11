@@ -18,6 +18,7 @@ const Document = ({ children }) => (
 			h('script', { type: 'importmap', dangerouslySetInnerHTML: {
 				__html: JSON.stringify({ imports: {
 					'react': 'https://esm.sh/react@18.1.0?dev',
+					'react-dom': 'https://esm.sh/react-dom@18.1.0?dev',
 					'react-dom/client': 'https://esm.sh/react-dom@18.1.0/client?dev'
 				} })
 			} }),

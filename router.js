@@ -47,5 +47,7 @@ export const Switch = ({ routes }) => {
 
   const Route = routes[location] ?? (() => h('p', {}, '404'))
 
-  return h(Route)
+  const getLayout = Route.getLayout || ((route) => route)
+
+  return getLayout(h(Route))
 }
