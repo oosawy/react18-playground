@@ -1,5 +1,6 @@
 import React, {Fragment, Suspense, useState} from 'react'
 import { Switch } from './router.js'
+import { routes as warpRoutes } from './features/warp/index.js'
 
 const h = React.createElement
 
@@ -54,6 +55,8 @@ const About = () => {
 const routes = {
 	'/': Index,
 	'/about': About,
+
+	...warpRoutes,
 }
 
 export const App = () => h(Suspense, { fallback: 'loading...' }, h(Switch, { routes }))
