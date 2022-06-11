@@ -20,7 +20,7 @@ const Document = ({ children }) => (
 					'react-dom': 'https://esm.sh/react-dom@18.0.0-alpha-1314299c7-20210901'
 				} })
 			} }),
-			h('script', { type: 'module', src: '/client' })
+			h('script', { type: 'module', src: '/client.js' })
 		)
 	)
 )
@@ -35,9 +35,9 @@ const server = http.createServer((req, res) => {
 
 	const url = new URL(req.url, `http://${req.headers.host}`)
 
-	if (url.pathname === '/client' || url.pathname === '/App') {
+	if (url.pathname.endsWith('.js')) {
 		res.setHeader('Content-Type', 'text/javascript')
-		fs.createReadStream(`./${url.pathname.slice(1)}.js`).pipe(res)
+		fs.createReadStream(`./${url.pathname.slice(1)}`).pipe(res)
 		return
 	}
 	if (url.pathname !== '/') {
