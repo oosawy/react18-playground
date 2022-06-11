@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useSyncExternalStore } from 'react'
+import React, { useRef, useContext } from 'react'
 import { createPortal } from 'react-dom'
 
 const h = React.createElement
@@ -14,9 +14,7 @@ export const WarpProvider = ({ children }) => {
 }
 
 const WarpHost = ({ manager: { portals } }) => {
-  const state = useSyncExternalStore(portals.listen, portals.getState, portals.getState)
-
-  return state.map(([key, portal]) => portal)
+  return [...portals.entries()].map(([key, portal]) => portal)
 }
 
 export const Warp = ({ children }) => {
@@ -30,12 +28,19 @@ export const Warp = ({ children }) => {
 
 const createWarpManager = () => {
   const nodes = new Map()
-  const portals = new SyncMap()
+  const portals = new Map()
 
   return {
     portals,
     with(key, children) {
-      if (nodes.has(key)) return nodes.get(key)
+      if (nodes.has(key)) {
+        const node = nodes.get(key)
+
+        // const portal = createPortal(children, node)
+        // portals.set(key, portal)
+
+        return node
+      }
 
       const node = document.createElement('div')
       nodes.set(key, node)
@@ -45,33 +50,5 @@ const createWarpManager = () => {
 
       return node
     }
-  }
-}
-
-class SyncMap extends Map {
-  #lisners = new Set()
-  #cache
-
-  getState = () => {
-    return this.#cache || (this.#cache = [...this.entries()])
-  }
-
-  listen = () => {
-    this.#lisners.add(this)
-
-    return () => {
-      this.#lisners.delete(this)
-    }
-  }
-
-  #notify() {
-    this.#cache = null
-    this.#lisners.forEach(listener => listener())
-  }
-
-  set(key, value) {
-    super.set(key, value)
-    this.#notify()
-    return this
   }
 }
