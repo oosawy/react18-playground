@@ -1,5 +1,4 @@
 import React, {Fragment, Suspense, useState} from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
 
 const h = React.createElement
 
@@ -24,7 +23,7 @@ const Index = () => {
 
 	return (
 		h(Fragment, {},
-			h(Link, { to: '/about' }, 'About'),
+			h('a', { href: '/about' }, 'About'),
 			h(Suspense, { fallback: h('p', {}, 'loading...') },
 				h(Content, { resource })
 			),
@@ -34,12 +33,7 @@ const Index = () => {
 
 const About = () => h('p', {}, 'This is a PoC of simple and straightforward React framework!')
 
-export const App = () => (
-	h(Switch, {},
-		h(Route, { path: '/', exact: true, component: Index }),
-		h(Route, { path: '/about', component: About }),
-	)
-)
+export const App = () => h(Index)
 
 const createResource = () => {
 	console.log('LOADING')
@@ -52,7 +46,7 @@ const createResource = () => {
 		}
 	}
 	timeout.then(() => resource.resolved = true)
-	
+
 	return resource
 }
 
