@@ -1,25 +1,30 @@
 import React, {Fragment, Suspense, useState} from 'react'
+import { Switch } from './router.js'
 
 const h = React.createElement
 
-const Content = ({ resource }) => (
-	h(Fragment, {},
-		h('div', {}, resource.read()),
-		h('div', {},
-			h('title', {}, resource.read()),
-			h('meta', { name: 'twitter:card', content: 'summary' }),
-			h('meta', { name: 'twitter:site', content: '@nytimesbits' }),
-			h('meta', { name: 'twitter:creator', content: '@nickbilton' }),
-			h('meta', { property: 'og:url', content: 'http://bits.blogs.nytimes.com/2011/12/08/a-twitter-for-my-sister/' }),
-			h('meta', { property: 'og:title', content: 'A Twitter for My Sister' }),
-			h('meta', { property: 'og:description', content: 'In the early days, Twitter grew so quickly that it was almost impossible to add new features because engineers spent their time trying to keep the rocket ship from stalling.' }),
-			h('meta', { property: 'og:image', content: 'http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg' }),
-		)
-	)
-)
+const createResource = () => {
+	console.log('LOADING')
+	let resolve
+	const timeout = new Promise(r => resolve = r)
+	timeout.then(() => resource.resolved = true)
+	const resource = {
+		loading: false,
+		resolved: false,
+		read() {
+			if (this.resolved) return 'hello world'
+			if (!this.loading) setTimeout(resolve, 1000)
+			throw timeout
+		}
+	}
+
+	return resource
+}
+
+const initialResource = createResource()
 
 const Index = () => {
-	const [resource] = useState(() => createResource())
+	const [resource] = useState(initialResource)
 
 	return (
 		h(Fragment, {},
@@ -31,22 +36,24 @@ const Index = () => {
 	)
 }
 
-const About = () => h('p', {}, 'This is a PoC of simple and straightforward React framework!')
+const Content = ({ resource }) => h('p', {}, resource.read())
 
-export const App = () => h(Index)
+const aboutResource = createResource()
 
-const createResource = () => {
-	console.log('LOADING')
-	const timeout = new Promise(r => setTimeout(r, 1000))
-	const resource = {
-		resolved: false,
-		read() {
-			if (!this.resolved) throw timeout
-			return 'hello world'
-		}
-	}
-	timeout.then(() => resource.resolved = true)
+const About = () => {
+	const [resource] = useState(aboutResource)
 
-	return resource
+	return (
+		h('div', {},
+			h('p', {}, resource.read()),
+			h('a', { href: '/' }, 'Back to top')
+		)
+	)
 }
 
+const routes = {
+	'/': Index,
+	'/about': About,
+}
+
+export const App = () => h(Suspense, { fallback: 'loading...' }, h(Switch, { routes }))

@@ -3,6 +3,7 @@ import fs from 'fs'
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import { App } from './App.js'
+import { StaticRouter } from './router.js'
 
 const h = React.createElement
 
@@ -25,9 +26,7 @@ const Document = ({ children }) => (
 	)
 )
 
-const renderApp = () => h(Document, {}, h(App))
-
-const STATIC = ReactDOM.renderToString(renderApp())
+const renderApp = ({ location }) => h(Document, {}, h(StaticRouter, { location } , h(App)))
 
 const server = http.createServer((req, res) => {
 	console.log()
@@ -40,19 +39,15 @@ const server = http.createServer((req, res) => {
 		fs.createReadStream(`./${url.pathname.slice(1)}`).pipe(res)
 		return
 	}
-	if (url.pathname !== '/') {
-		res.statusCode = 404
-		res.end()
-		return
-	}
+
+	const app = renderApp({ location: url.pathname })
 
 	res.setHeader('Content-Type', 'text/html')
 
 	const emulateBot = url.search === '?bot'
 	const isBot = ['bot', 'Bot'].some(e => req.headers['user-agent'].includes(e))
-	if (!isBot && !emulateBot) return res.end('<!DOCTYPE html>' + STATIC)
+	if (!isBot && !emulateBot) return res.end('<!DOCTYPE html>' + ReactDOM.renderToString(app))
 
-	const app = renderApp()
 	const { startWriting } = ReactDOM.pipeToNodeWritable(app, res, {
 		onReadyToStream() {
 			res.write('<!DOCTYPE html>')
